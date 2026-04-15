@@ -45,15 +45,16 @@
     int32_t checksum = [sendData crc32];
     int32_t swapped = CFSwapInt32LittleToHost(checksum);
     char *a = (char*) &swapped;
-    [sendData appendBytes:a length:sizeof(4)];
+    [sendData appendBytes:a length:sizeof(swapped)];
     
-    //检验
+#ifdef DEBUG
     Byte *b1 = (Byte *)[sendData bytes];
     NSLog(@"===============================================");
-    for (int i = 0; i < sendData.length; i++) {
-        NSLog(@"b1[%d] == %d",i,b1[i]);
+    for (NSUInteger i = 0; i < sendData.length; i++) {
+        NSLog(@"b1[%lu] == %d",(unsigned long)i,b1[i]);
     }
     NSLog(@"b1:%@",[sendData base64EncodedStringWithOptions:0]);
+#endif
 }
 
 - (void)didReceiveMemoryWarning {
